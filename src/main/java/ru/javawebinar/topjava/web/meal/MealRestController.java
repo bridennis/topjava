@@ -3,14 +3,21 @@ package ru.javawebinar.topjava.web.meal;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class MealRestController extends AbstractMealController {
 
     @Override
     public Collection<Meal> getAll() {
-        return super.getAll();
+        return super.getAll(LocalDateTime.MIN, LocalDateTime.MAX);
+    }
+
+    @Override
+    public List<Meal> getAll(LocalDateTime dateTimeStart, LocalDateTime dateTimeStop) {
+        return super.getAll(dateTimeStart, dateTimeStop);
     }
 
     @Override
@@ -19,8 +26,8 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
-    public Meal create(Meal user) {
-        return super.create(user);
+    public Meal create(Meal meal) {
+        return super.create(meal);
     }
 
     @Override
@@ -29,8 +36,8 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
-    public void update(Meal user, int id) {
-        super.update(user, id);
+    public void update(Meal meal, int id) {
+        super.update(meal, id);
     }
 
 }

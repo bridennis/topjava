@@ -4,10 +4,12 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,10 +48,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll() {
+    public List<Meal> getAll(LocalDateTime dateTimeStart, LocalDateTime dateTimeStop) {
         return repository.values()
                 .stream()
-                .filter((meal) -> meal.getUserId() == AuthorizedUser.id())
+                .filter((meal) ->
+                    meal.getUserId() == AuthorizedUser.id() &&
+                    DateTimeUtil.isBetween(meal.getDateTime(), dateTimeStart, dateTimeStop)
+                )
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
     }
